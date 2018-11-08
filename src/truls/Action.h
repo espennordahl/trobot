@@ -13,9 +13,10 @@
 
 class Action{
   public:
-    Action(MeDCMotor *motorL, MeDCMotor *motorR){
+    Action(TrKjMotor *motorL, TrKjMotor *motorR){
       m_motorL = motorL;
       m_motorR = motorR;
+      m_pdf = 0;
     }
 
     int pdf(){
@@ -29,26 +30,28 @@ class Action{
     virtual void updatePdf(State *state){};
 
   protected:
-    MeDCMotor *m_motorL;
-    MeDCMotor *m_motorR;
+    TrKjMotor *m_motorL;
+    TrKjMotor *m_motorR;
     int m_pdf;
 };
 
 
 class ActionForward : public Action{
   public:
-    ActionForward(MeDCMotor *motorL, MeDCMotor *motorR)
+    ActionForward(TrKjMotor *motorL, TrKjMotor *motorR)
     : Action(motorL, motorR) { 
           Serial.println("Initializing ActionForward");
       };
       
     void perform(State *state){
+      Serial.println("Performing ActionForward");
       m_motorL->run(-state->moveSpeed());
       m_motorR->run(state->moveSpeed());
       delay(random(ACTIONTIME));
     }
 
     void updatePdf(State *state){
+      
       m_pdf = remap(state->centerDepth(), 10, 100, 5, 100);
       Serial.println("Forward pdf: ");
       Serial.println(m_pdf);
@@ -61,12 +64,13 @@ class ActionForward : public Action{
 
 class ActionBackward : public Action{
   public:
-    ActionBackward(MeDCMotor *motorL, MeDCMotor *motorR)
+    ActionBackward(TrKjMotor *motorL, TrKjMotor *motorR)
     : Action(motorL, motorR) { 
           Serial.println("Initializing ActionBackward");
       };
       
     void perform(State *state){
+      Serial.println("Performing ActionBackward");
       m_motorL->run(state->moveSpeed());
       m_motorR->run(-state->moveSpeed());
       delay(random(ACTIONTIME));
@@ -85,12 +89,13 @@ class ActionBackward : public Action{
 
 class ActionRotateLeft : public Action{
   public:
-    ActionRotateLeft(MeDCMotor *motorL, MeDCMotor *motorR)
+    ActionRotateLeft(TrKjMotor *motorL, TrKjMotor *motorR)
     : Action(motorL, motorR) { 
       Serial.println("Initializing ActionRotateLeft");
     };
 
     void perform(State *state){
+      Serial.println("Performing ActionRotateLeft");
       m_motorL->run(state->moveSpeed());
       m_motorR->run(state->moveSpeed());
       delay(random(ACTIONTIME));
@@ -114,7 +119,7 @@ class ActionRotateLeft : public Action{
 
 class ActionRotateRight : public Action{
   public:
-      ActionRotateRight(MeDCMotor *motorL, MeDCMotor *motorR)
+      ActionRotateRight(TrKjMotor *motorL, TrKjMotor *motorR)
     : Action(motorL, motorR) { 
       Serial.println("Initializing ActionRotateRight");
       };

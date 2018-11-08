@@ -1,4 +1,4 @@
-#ifndef STATE_H
+  #ifndef STATE_H
 #define STATE_H
 
 #include "UltrasonicSensor.h"
@@ -14,22 +14,26 @@ class State{
 			m_leftSensor = leftSensor;
 			m_rightSensor = rightSensor;
 			m_speed = 250;
+      m_previousAction = NULL;
+      m_nextAction = NULL;
 		};
 
-  		Action *nextAction() { return m_nextAction; };
+  	Action *nextAction() { return m_nextAction; };
+		
 		void setNextAction(Action *action) { m_nextAction = action; };
 
-  		Action *previousAction() { return m_previousAction; };
+  	Action *previousAction() { return m_previousAction; };
+		
 		void setPreviousAction(Action *action) { m_previousAction = action; };
 
-  		long centerDepth() { return m_centerDepth; };
-  		long leftDepth() { return m_leftDepth; };
-  		long rightDepth() { return m_rightDepth; };
+  	long centerDepth() { return m_centerDepth; };
+  	long leftDepth() { return m_leftDepth; };
+  	long rightDepth() { return m_rightDepth; };
 
-	  	void update(){
-      		m_centerDepth = m_centerSensor->distanceCm(SENSORMAX);
-	  		m_leftDepth = m_leftSensor->distanceCm(SENSORMAX);
-	  		m_rightDepth = m_rightSensor->distanceCm(SENSORMAX);
+	  void update(){
+	    m_centerDepth = m_centerSensor->distanceCm(SENSORMAX);
+	  	m_leftDepth = m_leftSensor->distanceCm(SENSORMAX);
+	  	m_rightDepth = m_rightSensor->distanceCm(SENSORMAX);
 
 			Serial.println("center depth:");
 			Serial.println(m_centerDepth);
